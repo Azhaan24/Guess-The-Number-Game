@@ -35,7 +35,13 @@ public class GameActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_game);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left,systemBars.top,systemBars.right,systemBars.bottom);
+            return insets;
+        });
 
         textViewHint=findViewById(R.id.textViewHint);
         textViewLast=findViewById(R.id.textViewLast);
@@ -77,13 +83,13 @@ public class GameActivity extends AppCompatActivity {
                     int userGuess=Integer.parseInt(guess);
                     guessList.add(userGuess);
                     textViewLast.setText("Your Last Guess was: "+guess);
-                    textViewRight.setText("Your Remaining Right: "+remainigRight);
+                    textViewRight.setText("Your Remaining Attempts: "+remainigRight);
 
                     if(random==userGuess){
                         AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.this);
                         builder.setTitle("Game Over");
                         builder.setCancelable(false);
-                        builder.setMessage("Cogratulations! You guessed it Correctly! \n\nMy number was: "+random+"\n\nYou got my number in "+userAttempts+" attempts."+"\n\nYour Guesses: "+guessList+"\n\nWould You Like to Play Again?");
+                        builder.setMessage("Congratulations! You guessed it Correctly! \n\nMy number was: "+random+"\n\nYou got my number in "+userAttempts+" attempts."+"\n\nYour Guesses: "+guessList+"\n\nWould You Like to Play Again?");
                         builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
